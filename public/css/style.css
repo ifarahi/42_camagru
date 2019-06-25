@@ -1,0 +1,16 @@
+h1 {
+    color: red;
+}
+.footer_style {
+    margin-bottom: 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.form-class{
+
+    padding: 20px;
+}
