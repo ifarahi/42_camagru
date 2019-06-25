@@ -5,17 +5,11 @@
     }
 
     public function index(){
-      $data =[
-        'email' => '',
-        'password' => '',
-        'email_error' => '',
-        'password_error' => '',     
-      ];
-      $this->view('users/login', $data);
+      redirects('users/login');
     }
 
     public function register(){
-    // if already logged in cannot acces
+        // if already logged in cannot acces
       if (!empty($_SESSION['user_id']))
       redirects('pages/index');
       // Check for POST
@@ -73,6 +67,9 @@
         // Validate Name
         if(empty($data['name'])){
           $data['name_error'] = 'Pleae enter name';
+        } else {
+            if (!ctype_alnum($data['name']))
+                $data['name_error'] = 'Please enter a valid name';
         }
 
         // Validate Password
@@ -245,31 +242,113 @@
     }
 
     public function setting(){
-      // only users can access this page
-      if (!isset($_SESSION['user_id']))
-        redirects('users/login');
+        // only users can access this page
+        if (!isset($_SESSION['user_id']))
+            redirects('users/login');
 
-      //check if the post method is set
-      if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //check if the post method is set
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // set this varialble to 1 if some information has been updated to display success message
+        $sign = 0;
+        $email_sign = 0;
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-      // Sanitize POST data
-      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // edit only personal information
+        if (isset($_POST['update_personal_information'])){
+                // Init data
+                $data =[
+                'name' => trim($_POST['name']),
+                'username' => trim($_POST['username']),
+                'email' => trim($_POST['email']),
+                'name_error' => '',
+                'username_error' => '',
+                'email_error' => '',
+                'success' => '',
+                'email_hash' => '',
+                'message' => '',
+                'title' => ''
+                ];
 
-      // edit only personal information
-      if ($_POST['update_personal']){
-      // Init data
-      $data =[
-        'name' => trim($_POST['name']),
-        'username' => trim($_POST['username']),
-        'email' => trim($_POST['email']),
-        'name_error' => '',
-        'username_error' => '',
-        'email_error' => ''
-        ];
-      }
+            // Validate Email
+            if ($data['email'] != $_SESSION['email']) {
+                if(empty($data['email'])){
+                    $data['email_error'] = 'Pleae enter email';
+                } else {
+                    // check if valid email
+                    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+                        $data['email_error'] = "Please enter a valid email";
+                    // Check email if exists
+                    if($this->userModel->findUserByEmail($data['email']))
+                        $data['email_error'] = 'Email is already taken';
+                }
+            }
+            //valid username
+            if ($data['username'] != $_SESSION['username']){
+                if (preg_match('/\s/',$data['username']) || !ctype_alnum($data['username'])){
+                    $data['username_error'] = 'Please enter a valid username';
+                } else {
+                    // check the lenght of the username
+                    if (strlen($data['username']) < 6)
+                        $data['username_error'] = 'Username should be at least 6 characters';
+                    // check if the username is already taken
+                    if ($this->userModel->findUserByUsername($data['username']))
+                            $data['username_error'] = 'Username is already taken';
+                }
+            }
+            // Validate Name
+            if ($data['name'] != $_SESSION['name']){
+                if(empty($data['name'])){
+                    $data['name_error'] = 'Pleae enter name';
+                } else {
+                    if (!ctype_alnum($data['name']))
+                        $data['name_error'] = 'Please enter a valid name';
+                }
+            }
+            // update the information 
+            if ($data['name'] != $_SESSION['name'] && empty($data['name_error']) && empty($data['username_error']) && empty($data['email_error'])){
+                $this->userModel->updateName($data);
+                $_SESSION['name'] = $data['name'];
+                $sign = 1;
+            }
+            if ($data['username'] != $_SESSION['username'] && empty($data['name_error']) && empty($data['username_error']) && empty($data['email_error'])){
+                $this->userModel->updateUsername($data);
+                $_SESSION['username'] = $data['username'];
+                $sign = 1;
+            }
+            if ($data['email'] != $_SESSION['email'] && empty($data['name_error']) && empty($data['username_error']) && empty($data['email_error'])){
+                $hash = md5( rand(0,1000) );
+                $data['email_hash'] = $hash;
+                $this->userModel->updateEmail($data);
+                $link = URLROOT . '/users/emailVerification/' . $hash;
+                $data['message'] = 'Please click on the link to verify your new email : ' . $link;
+                $data['title'] = 'Camagru: Verify your new email';
+                $this->sendEmailnotification($data);
+                $_SESSION['email'] = $data['email'];
+                $sign = 1;
+                $email_sign = 1;
+            }
+            // if information has been updated and there is no error load the view with success
+            if ($sign > 0){
+                if ($email_sign > 0){
+                    $data['success'] = 'Your changed your email you will be logged out in 5 sec confirm your new email to login...';
+                    $this->view('users/setting', $data);
+                    sleep(5);
+                    $this->logout();
+                    redirects('users/login');
+                } else {
+                    $data['success'] = 'Your information has been updated';
+                    $this->view('users/setting', $data);
+                }
+            } else {
+                // load the view with errors
+                $this->view('users/setting', $data);
+            }
+        }
 
-      }
-      $this->view('users/setting');
+        } else {
+            $this->view('users/setting');
+        }
     }
 
     public function forgetPassword(){
@@ -361,7 +440,7 @@
           $data['password_m_error'] = 'Password does not match';
         }
         if (empty($data['password_error'])){
-          if($this->userModel->updatePassword($data)){
+          if($this->userModel->updatePassword($data) && $this->userModel->deletehash($data)){
               unset($data['password']);
               $data['notification'] = 'Your password has been updated you can login';
               $this->view('users/login', $data);

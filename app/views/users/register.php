@@ -6,7 +6,7 @@
         <p>Please fill out this form to register with us</p>
         <form action="<?php echo URLROOT; ?>/users/register" method="post">
             <div class="form-group">
-            <label for="name">Full name: <sup>*</sup></label>
+            <label for="name">Name: <sup>*</sup></label>
             <input type="text" name="name" class="form-control form-control-lg <?php echo (!empty($data['name_error'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['name']; ?>">
             <span class="invalid-feedback"><?php echo $data['name_error']; ?></span>
             </div>

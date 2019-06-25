@@ -50,6 +50,18 @@
             $this->db->execute();
         }
 
+        // Set email verification hash
+        public function setEmailVerificationHash($data){
+            $this->db->query('UPDATE users SET validation_hash = :hash WHERE email = :email');
+            $this->db->bind(':hash', $data['email_hash']);
+            $this->db->bind(':email', $data['email']);
+
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
         // Check if the account is verfied with email
         public function isVerified($email){
             $this->db->query('SELECT * FROM users WHERE email = :email');
@@ -134,9 +146,20 @@
                 return false;
         }
 
+        // Delete the old hash
+        public function deleteHash($data){
+            $this->db->query('UPDATE users SET forget_pass_hash = "empty_for_now" WHERE email = :email');
+            $this->db->bind(':email', $data['email']);
+            
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
         // execute and change user password
         public function updatePassword($data){
-            $this->db->query('UPDATE users SET password = :password, forget_pass_hash = "empty_for_now" WHERE email = :email');
+            $this->db->query('UPDATE users SET password = :password WHERE email = :email');
             $this->db->bind(':password', password_hash($data['password'], PASSWORD_DEFAULT));
             $this->db->bind(':email', $data['email']);
             
@@ -145,6 +168,45 @@
             else
                 return false;
         }
+
+        // Update the name 
+        public function updateName($data){
+            $this->db->query('UPDATE users SET name = :name WHERE email = :email');
+            $this->db->bind(':name', $data['name']);
+            $this->db->bind(':email', $data['email']);
+
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
+        // Update the username
+        public function updateUsername($data){
+            $this->db->query('UPDATE users SET username = :username WHERE email = :email');
+            $this->db->bind(':username', $data['username']);
+            $this->db->bind(':email', $data['email']);
+
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
+        // Update the email
+        public function updateEmail($data){
+            $this->db->query('UPDATE users SET email = :email, activation = :key, validation_hash = :hash WHERE username = :username');
+            $this->db->bind(':email', $data['email']);
+            $this->db->bind(':key', NULL);
+            $this->db->bind(':username', $data['username']);
+            $this->db->bind(':hash', $data['email_hash']);
+
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
         // activate email notification so user can recieve email when someone comment on thier posts
         public function activateEmailNotification($email){
             $this->db->query('UPDATE users SET email_notification = 1 WHERE email = :email');
@@ -155,4 +217,5 @@
             else
                 return false;
         }
+
     }

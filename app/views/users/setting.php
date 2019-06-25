@@ -1,21 +1,29 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <div class="co-md-6 mx-auto p-15">
 <div class="card card-body bg-light mt-5 p-15">
-<form>
+<?php
+if (!empty($data['success'])){
+            echo '<div class="alert alert-success" role="alert"> ' . $data['success'] . ' </div> ';
+        }
+?>
+<form action="<?php echo URLROOT; ?>/users/setting" method="post">
 <h3>Personal information</h3>
   <div class="form-group">
-    <label for="exampleInputEmail1">Full name:</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" value="<?php echo $_SESSION['name'];?>">
+    <label for="exampleInputEmail1">Name:</label>
+    <input type="text" name="name" class="form-control <?php echo (!empty($data['name_error'])) ? 'is-invalid' : ''; ?>"  value="<?php echo $_SESSION['name'];?>">
+    <span class="invalid-feedback"><?php echo $data['name_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">Username:</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" value="<?php echo $_SESSION['username'];?>">
+    <input type="text" name="username" class="form-control <?php echo (!empty($data['username_error'])) ? 'is-invalid' : ''; ?>" value="<?php echo $_SESSION['username'];?>">
+    <span class="invalid-feedback"><?php echo $data['username_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">Email address:</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?php echo $_SESSION['email'];?>">
+    <input type="text" name="email" class="form-control <?php echo (!empty($data['email_error'])) ? 'is-invalid' : ''; ?>"  value="<?php echo $_SESSION['email'];?>">
+    <span class="invalid-feedback"><?php echo $data['email_error']; ?></span>
   </div>
-  <button type="submit" class="btn btn-success" style="width:100%">Update</button>
+  <button type="submit" name="update_personal_information" class="btn btn-success" style="width:100%">Update</button>
   </form>
 </div>
 </div>

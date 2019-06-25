@@ -11,7 +11,7 @@ define('DB_NAME', 'shareposts');
 define('APPROOT', dirname(dirname(__FILE__))); 
 
 // URL Root
-define('URLROOT', 'http://localhost:8001/camagru');
+define('URLROOT', 'http://e1r1p3.1337.ma:8001/camagru');
 // Site name
 define('SITENAME', 'Camagru');
 
