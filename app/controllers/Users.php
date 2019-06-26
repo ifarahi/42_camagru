@@ -100,7 +100,7 @@
         {
             $link = $link = URLROOT . '/users/emailVerification/' . $data['validation_hash'];
             $data['message'] = 'Please click on the link to validate you registration : ' . $link;
-            $data['title'] = 'Camagru: Complete your registration';
+            $data['title'] = '[Camagru] Complete your registration';
             $this->sendEmailnotification($data);
             $data['email_verification'] = 'alert-info';
             $data['email'] = '';
@@ -248,27 +248,29 @@
 
         //check if the post method is set
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // set this varialble to 1 if some information has been updated to display success message
-        $sign = 0;
-        $email_sign = 0;
+        
         // Sanitize POST data
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         // edit only personal information
         if (isset($_POST['update_personal_information'])){
-                // Init data
-                $data =[
-                'name' => trim($_POST['name']),
-                'username' => trim($_POST['username']),
-                'email' => trim($_POST['email']),
-                'name_error' => '',
-                'username_error' => '',
-                'email_error' => '',
-                'success' => '',
-                'email_hash' => '',
-                'message' => '',
-                'title' => ''
-                ];
+            // Init data
+            $data =[
+            'name' => trim($_POST['name']),
+            'username' => trim($_POST['username']),
+            'email' => trim($_POST['email']),
+            'name_error' => '',
+            'username_error' => '',
+            'email_error' => '',
+            'success_personal' => '',
+            'email_hash' => '',
+            'message' => '',
+            'title' => ''
+            ];
+
+            // set this varialble to 1 if some information has been updated to display success message
+            $sign = 0;
+            $email_sign = 0;
 
             // Validate Email
             if ($data['email'] != $_SESSION['email']) {
@@ -322,7 +324,7 @@
                 $this->userModel->updateEmail($data);
                 $link = URLROOT . '/users/emailVerification/' . $hash;
                 $data['message'] = 'Please click on the link to verify your new email : ' . $link;
-                $data['title'] = 'Camagru: Verify your new email';
+                $data['title'] = '[Camagru] Please verify your new email';
                 $this->sendEmailnotification($data);
                 $_SESSION['email'] = $data['email'];
                 $sign = 1;
@@ -331,12 +333,11 @@
             // if information has been updated and there is no error load the view with success
             if ($sign > 0){
                 if ($email_sign > 0){
-                    $url = URLROOT . '/home';
-                    $data['success'] = '<h3>Your information has been updated</h3> <br>
+                    $data['success_personal'] = '<h3>Your information has been updated</h3> <br>
                     Please note that when you changed your email next time you will need to verify your email before login';
                     $this->view('users/setting', $data);
                 } else {
-                    $data['success'] = '<h3>Your information has been updated</h3>';
+                    $data['success_personal'] = '<h3>Your information has been updated</h3>';
                     $this->view('users/setting', $data);
                 }
             } else {
@@ -344,7 +345,67 @@
                 $this->view('users/setting', $data);
             }
         }
+        // edit only password part
+        elseif (isset($_POST['update_password'])){
+            // Init data
+            $data =[
+                'current_password' => trim($_POST['current_password']),
+                'password' => trim($_POST['new_password']),
+                'confirm_password' => trim($_POST['confirm_password']),
+                'email' => $_SESSION['email'],
+                'current_password_error' => '',
+                'new_password_error' => '',
+                'confirm_password_error' => '',
+                'success_password' => '',
+                'message' => 'title',
+                'title' => ''
+                ];
+            
+            // Validate current password
+            if(empty($data['current_password'])){
+            $data['current_password_error'] = 'Please enter a password';
+            }
 
+            // check if the current password is correct
+            if(empty($data['current_password_error'])){
+                $loggedInUser = $this->userModel->login($_SESSION['username'], $data['current_password']);
+                if ($loggedInUser == false){
+                    $data['current_password_error'] = 'Incorrect password';
+                }
+            }
+
+            // Validate new password
+            if(empty($data['password'])){
+                $data['new_password_error'] = 'Please enter a password';
+            } else {
+                // Validate new password strength
+                $uppercase = preg_match('@[A-Z]@', $data['password']);
+                $lowercase = preg_match('@[a-z]@', $data['password']);
+                $number    = preg_match('@[0-9]@', $data['password']);
+                if(!$uppercase || !$lowercase || !$number || strlen($data['password']) < 8)
+                    $data['new_password_error'] = 'Password should be at least 8 characters in length and should include at least one upper case letter, one number.';
+            }
+
+            // validate confirm_password
+            if ($data['password'] != $data['confirm_password'])
+                $data['confirm_password_error'] = 'Password does not match!';
+
+            // check if the is no error 
+            if (empty($data['current_password_error']) && empty($data['new_password_error']) && empty($data['confirm_password_error'])){
+                // update the password and print success message
+                $this->userModel->updatePassword($data);
+                // send email notification
+                $data['message'] = 'We wanted to let you know that your Camagru password was reset. ';
+                $data['title'] = '[Camagru] Your password was reset';
+                $this->sendEmailnotification($data);
+                $data['success_password'] = 'Your password has been updated';
+                $this->view('users/setting', $data);
+            } else {
+                // load the view with the errors
+                $this->view('users/setting', $data);
+            }
+        }
+        // load the simple view
         } else {
             $this->view('users/setting');
         }
@@ -392,7 +453,7 @@
           $this->userModel->storeForgetPasswordHash($data);
           $link = URLROOT . '/users/newpassword/' . $data['forget_password_hash'];
           $data['message'] = 'Please click on the link to set new password: ' . $link;
-          $data['title'] = 'Camagru: account recovery';
+          $data['title'] = '[Camagru] Account recovery';
           $this->sendEmailnotification($data);
           $data['email_verification'] = 'alert alert-success';
           $data['email'] = '';

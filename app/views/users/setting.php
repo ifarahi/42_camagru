@@ -2,8 +2,8 @@
 <div class="co-md-6 mx-auto p-15">
 <div class="card card-body bg-light mt-5 p-15">
 <?php
-if (!empty($data['success'])){
-            echo '<div class="alert alert-success" role="alert"> ' . $data['success'] . ' </div> ';
+if (!empty($data['success_personal'])){
+            echo '<div class="alert alert-success" role="alert"> ' . $data['success_personal'] . ' </div> ';
         }
 ?>
 <form action="<?php echo URLROOT; ?>/users/setting" method="post">
@@ -30,21 +30,29 @@ if (!empty($data['success'])){
 <hr>
 <div class="co-md-6 mx-auto p-15">
 <div class="card card-body bg-light mt-2 p-15">
-<form>
+<?php
+if (!empty($data['success_password'])){
+            echo '<div class="alert alert-success" role="alert"> ' . $data['success_password'] . ' </div> ';
+        }
+?>
+<form action="<?php echo URLROOT; ?>/users/setting" method="post">
 <h3>Update password</h3>
   <div class="form-group">
     <label for="exampleInputEmail1">Current password:</label>
-    <input type="password" class="form-control" id="exampleInputEmail1" placeholder="Current password">
+    <input type="password" name="current_password" class="form-control <?php echo (!empty($data['current_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="Current password">
+    <span class="invalid-feedback"><?php echo $data['current_password_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">New password:</label>
-    <input type="password" class="form-control" id="exampleInputEmail1" placeholder="New password">
+    <input type="password" name="new_password" class="form-control <?php echo (!empty($data['new_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="New password">
+    <span class="invalid-feedback"><?php echo $data['new_password_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">Confirm new password:</label>
-    <input type="password" class="form-control" id="exampleInputEmail1" placeholder="confirm password">
+    <input type="password" name="confirm_password" class="form-control <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="confirm password">
+    <span class="invalid-feedback"><?php echo $data['confirm_password_error']; ?></span>
   </div>
-  <button type="submit" class="btn btn-success" style="width:100%">Update</button>
+  <button type="submit" name="update_password" class="btn btn-success" style="width:100%">Update</button>
   </form>
 </div>
 </div>

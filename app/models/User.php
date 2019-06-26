@@ -38,7 +38,7 @@
                 return $row;
             else 
                 return false;
-        }
+            }
         }
 
         // verify the account 
