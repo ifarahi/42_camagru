@@ -321,7 +321,7 @@
             if ($data['email'] != $_SESSION['email'] && empty($data['name_error']) && empty($data['username_error']) && empty($data['email_error'])){
                 $hash = md5( rand(0,1000) );
                 $data['email_hash'] = $hash;
-                $this->userModel->updateEmail($data);
+                if ($this->userModel->updateEmail($data)){
                 $link = URLROOT . '/users/emailVerification/' . $hash;
                 $data['message'] = 'Please click on the link to verify your new email : ' . $link;
                 $data['title'] = '[Camagru] Please verify your new email';
@@ -329,6 +329,7 @@
                 $_SESSION['email'] = $data['email'];
                 $sign = 1;
                 $email_sign = 1;
+                }
             }
             // if information has been updated and there is no error load the view with success
             if ($sign > 0){
@@ -345,6 +346,7 @@
                 $this->view('users/setting', $data);
             }
         }
+
         // edit only password part
         elseif (isset($_POST['update_password'])){
             // Init data
@@ -405,6 +407,30 @@
                 $this->view('users/setting', $data);
             }
         }
+
+        // edit email notification
+        elseif(isset($_POST['email_notification'])){
+            // Init data
+            $data =[
+                'success_notification' => '',
+                ];
+            
+            if ($_POST['option'] == 1){
+                if ($this->userModel->checkEmailNotificationStat($_SESSION['email']))
+                    $this->userModel->desactivateEmailNotification($_SESSION['email']);
+                else
+                    $this->userModel->activateEmailNotification($_SESSION['email']);
+                //update the current session
+                $_SESSION['email_notif'] = ($this->userModel->checkEmailNotificationStat($_SESSION['email'])) ? 1 : 0;
+                // load the view with success
+                $data['success_notification'] = 'Your choice is updated thank you';
+                $this->view('users/setting', $data);
+            } else {
+                // load the normal view
+                $this->view('users/setting', $data);
+            }
+        }
+
         // load the simple view
         } else {
             $this->view('users/setting');

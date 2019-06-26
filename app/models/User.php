@@ -218,4 +218,27 @@
                 return false;
         }
 
+        // Desactivate email notification
+        public function desactivateEmailNotification($email){
+            $this->db->query('UPDATE users SET email_notification = 0 WHERE email = :email');
+            $this->db->bind(':email', $email);
+
+            if ($this->db->execute())
+                return true;
+            else
+                return false;
+        }
+
+        // check if the email notification is active or not
+        public function checkEmailNotificationStat($email){
+            $this->db->query('SELECT * FROM users WHERE email = :email');
+            $this->db->bind(':email', $email);
+
+            $row = $this->db->single();
+            if ($row->email_notification > 0)
+                return true;
+            else
+                return false;
+        }
+
     }

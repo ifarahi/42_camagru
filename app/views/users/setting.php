@@ -58,18 +58,23 @@ if (!empty($data['success_password'])){
 </div>
 <hr>
 <div class="card card-body bg-light mt-2 p-15">
-<form action="">
+<?php
+if (!empty($data['success_notification'])){
+            echo '<div class="alert alert-success" role="alert"> ' . $data['success_notification'] . ' </div> ';
+        }
+?>
+<form action="<?php echo URLROOT; ?>/users/setting" method="post">
 <h3>Email notification</h3>
 <div class="input-group mb-3 mt-3">
   <div class="input-group-prepend">
     <label class="input-group-text" for="inputGroupSelect01">Recieve email notification on comments?</label>
   </div>
-  <select class="custom-select" id="inputGroupSelect01">
+  <select name="option" class="custom-select" id="inputGroupSelect01">
     <option selected><?php echo ($_SESSION['email_notif'] > 0) ? 'Yes i would like to' : 'No i dont thank you';?></option>
-    <option value="1">No i dont thank you</option>
+    <option value="1"><?php echo ($_SESSION['email_notif'] == 0) ? 'Yes i would like to' : 'No i dont thank you';?></option>
   </select>
 </div>
-<button type="submit" class="btn btn-success" style="width:100%">Update</button>
+<button type="submit" name="email_notification" class="btn btn-success" style="width:100%">Update</button>
 </form>
 </div>
 <?php require APPROOT . '/views/inc/footer.php'; ?>
