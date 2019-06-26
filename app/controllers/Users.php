@@ -331,13 +331,12 @@
             // if information has been updated and there is no error load the view with success
             if ($sign > 0){
                 if ($email_sign > 0){
-                    $data['success'] = 'Your changed your email you will be logged out in 5 sec confirm your new email to login...';
+                    $url = URLROOT . '/home';
+                    $data['success'] = '<h3>Your information has been updated</h3> <br>
+                    Please note that when you changed your email next time you will need to verify your email before login';
                     $this->view('users/setting', $data);
-                    sleep(5);
-                    $this->logout();
-                    redirects('users/login');
                 } else {
-                    $data['success'] = 'Your information has been updated';
+                    $data['success'] = '<h3>Your information has been updated</h3>';
                     $this->view('users/setting', $data);
                 }
             } else {
