@@ -206,7 +206,7 @@
       $_SESSION['email'] = $user->email;
       $_SESSION['username'] = $user->username;
       $_SESSION['email_notif'] = $user->email_notification;
-      redirects('users/setting');
+      redirects('');
     }
 
     public function logout(){

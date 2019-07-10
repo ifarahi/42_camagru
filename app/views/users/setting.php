@@ -67,7 +67,7 @@ if (!empty($data['success_notification'])){
 <h3>Email notification</h3>
 <div class="input-group mb-3 mt-3">
   <div class="input-group-prepend">
-    <label class="input-group-text" for="inputGroupSelect01">Recieve email notification on comments?</label>
+    <label class="input-group-text" for="inputGroupSelect01">Email notification on comments?</label>
   </div>
   <select name="option" class="custom-select" id="inputGroupSelect01">
     <option selected><?php echo ($_SESSION['email_notif'] > 0) ? 'Yes i would like to' : 'No i dont thank you';?></option>

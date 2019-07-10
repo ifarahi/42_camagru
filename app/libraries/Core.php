@@ -34,11 +34,6 @@ public function __construct(){
 
     $this->params = $url ? array_values($url) : [];
     
-    // $i = 0;
-    // foreach($url as $elem)
-    // {
-    //     $this->params[$i++] = $elem;
-    // }
     // call a callback with array of params
     call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
     //$this->currentController->$this->currentMethod($this->params);

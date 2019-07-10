@@ -1,14 +1,30 @@
-/* 
-.footer_style {
-    margin-bottom: 0;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
+ #profile-img {
+    height: 40px;
+    border-radius: 50%;
+    width: 40px;
+
 }
 
-.form-class{
+.profile-img {
+        padding: 0;
+}
 
-    padding: 20px;
-} */
+/*
+.Camera {
+    width: 500px;
+    height: 400px;
+}
+
+ */
+ #webcam-filter
+ {
+    position: relative;
+ }
+ 
+ #filterimg {
+    position: absolute;
+    height: 20%;
+    width: 20%;
+    left: 35px;
+    top: 20px;
+}

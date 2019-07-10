@@ -55,7 +55,7 @@ class Database {
                     $type = PDO::PARAM_STR;
             }
         }
-    $this->stmt->bindValue($param, $value);
+    $this->stmt->bindValue($param, $value, $type);
     }
 
     // Excute the prepard statment
