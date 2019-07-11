@@ -10,14 +10,14 @@
                         </div>
                         <div class="input-group" id="inputg">
                             <div class="custom-file" id="customfile">
-                                <input type="file" class="custom-file-input" accept=".png, .jpg" id="imageloader" name="imageloader">
+                                <input id="upload-file" type="file" class="custom-file-input" accept=".png, .jpg" id="imageloader" name="imageloader">
                                 <label class="custom-file-label" for="" id="labelcfile">Choose file</label>
                             </div>
                         </div>
                         <img id="imageshow"  class="w-100">
                         <img id="filterimg" style="display: none;" src="">
                     </div>
-                    <form id="submitf" action="include/webcam.inc.php" method="post" class="form-group">
+                    <form id="submitf" action="#" method="post" class="form-group">
                         <label for=""><input type="hidden" id="picurl" name="picurl">
                             <input type="hidden" id="emox" name="emox">
                             <input type="hidden" id="emoy" name="emoy">
@@ -36,7 +36,8 @@
                     </form>
                     <div class="form-group">
                         <button disabled class="btn btn-primary btn-block" id="startbutton">Take picture</button>
-                        <button class="btn btn-primary open-camera mt-5">Open camera</button>
+                        <button style="display:none;" disabled class="btn btn-primary btn-block" id="uploadbutton">Upload picture</button>
+                        <!-- <button class="btn btn-primary open-camera mt-5">Open camera</button> -->
                     </div>
                 </div>
             </div>
@@ -58,7 +59,9 @@
                     }
                     ?>
                 <canvas id="canvas" class="w-100" style="display: none;" width="500" height="400"></canvas>
+                <canvas id="canvas-test" class="w-100" style="" width="500" height="400"></canvas>
             </div>
         </div>
     </div>
+    <script src="<?php echo URLROOT; ?>/public/js/camera.js"></script>
   <?php require APPROOT . '/views/inc/footer.php'; ?>

@@ -39,17 +39,17 @@ if (!empty($data['success_password'])){
 <h3>Update password</h3>
   <div class="form-group">
     <label for="exampleInputEmail1">Current password:</label>
-    <input type="password" name="current_password" class="form-control <?php echo (!empty($data['current_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="Current password">
+    <input type="password" name="current_password" class="form-control <?php echo (!empty($data['current_password_error'])) ? 'is-invalid' : ''; ?>"  placeholder="Current password">
     <span class="invalid-feedback"><?php echo $data['current_password_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">New password:</label>
-    <input type="password" name="new_password" class="form-control <?php echo (!empty($data['new_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="New password">
+    <input type="password" name="new_password" class="form-control <?php echo (!empty($data['new_password_error'])) ? 'is-invalid' : ''; ?>"  placeholder="New password">
     <span class="invalid-feedback"><?php echo $data['new_password_error']; ?></span>
   </div>
   <div class="form-group">
     <label for="exampleInputEmail1">Confirm new password:</label>
-    <input type="password" name="confirm_password" class="form-control <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail1" placeholder="confirm password">
+    <input type="password" name="confirm_password" class="form-control <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid' : ''; ?>"  placeholder="confirm password">
     <span class="invalid-feedback"><?php echo $data['confirm_password_error']; ?></span>
   </div>
   <button type="submit" name="update_password" class="btn btn-success" style="width:100%">Update</button>
