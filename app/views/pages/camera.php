@@ -36,9 +36,7 @@
                     </form>
                     <div class="form-group">
                         <button disabled class="btn btn-primary btn-block" id="startbutton">Take picture</button>
-                        <button style="display:none;" disabled class="btn btn-primary btn-block" id="uploadbutton">Upload picture</button>
-                        <!-- <button class="btn btn-primary open-camera mt-5">Open camera</button> -->
-                    </div>
+                        <button style="display:none;" disabled class="btn btn-primary btn-block" id="uploadbutton">Upload picture</button>                    </div>
                 </div>
             </div>
                 <div id="image-holder" class="col-md-5 overflow-y ">  
@@ -52,14 +50,13 @@
                                 </form>
                                 <form action="#" method="post">
                                 <input type="hidden" name="'.$image->id.'" value="'.$image->image_url.'">
-                                <button class="btn btn-primary btn-block mb-2 delete-image">Delete this picture</button>
+                                <button class="btn btn-danger btn-block mb-2 delete-image">Delete this picture</button>
                                 </form>
                             '; 
                         }
                     }
                     ?>
                 <canvas id="canvas" class="w-100" style="display: none;" width="500" height="400"></canvas>
-                <canvas id="canvas-test" class="w-100" style="" width="500" height="400"></canvas>
             </div>
         </div>
     </div>

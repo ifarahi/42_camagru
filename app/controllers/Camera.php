@@ -73,12 +73,13 @@
                     'golden_crown' => 'img/filters/golden_crown.png',
                     'thumbs_up' => 'img/filters/thumbs_up.png'
                 ];
-                if (array_key_exists($_POST['filter'], $filters) && isset($_FILES['file']) && isset($_POST['imageSrc'])){                    
+                if (array_key_exists($_POST['filter'], $filters) && isset($_FILES['file']) && isset($_POST['imageSrc'])){                  
                     $errors = '';
                     $path = 'img/';
+                    $file = $_FILES['file'];
                     $imageSrc = $_POST['imageSrc'];
                     $extensions = ['jpg', 'jpeg', 'png'];
-                    $file_name = $_FILES['file']['name'];
+                    $file_name = $file['name'];
                     $file_t = $_FILES['file']['type'];
                     $file_ty = explode('/', $file_t);
                     $file_type = $file_ty[0];
@@ -101,7 +102,7 @@
                     if ($file_size > 4000000)
                         $error = 'File size is too big ! max is 4MB';
 
-                    if (!$dst = @imagecreatefrompng($imageSrc))
+                    if (!($dst = @imagecreatefrompng($imageSrc)))
                         $error = 'Not a valid image!';
 
                     if (!empty($error)){
@@ -134,11 +135,8 @@
                         }
                         
                     }
-                }
-
+                } 
             }
-            // $info = $_FILES['file'];
-            // echo "Msg arrived";
         }
 
 

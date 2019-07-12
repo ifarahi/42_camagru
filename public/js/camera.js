@@ -49,7 +49,7 @@ inputFile.addEventListener('change', function(event) {
                             formData.append('file', file);
                             formData.append('imageSrc', canvas.toDataURL('image/png'));
                             formData.append('filter', filters.value);
-                                
+                            
                             fetch(url, {
                                 method: 'POST',
                                 body: formData,
@@ -159,7 +159,7 @@ function    showImage(info){
         </form>
         <form action="#" method="post">
         <input type="hidden" name="${info['image_row']['id']}" value="${info['image_row']['image_url']}">
-        <button class="btn btn-primary btn-block mb-2 delete-image">Delete this picture</button>
+        <button class="btn btn-danger btn-block mb-2 delete-image">Delete this picture</button>
         </form>
         `;
         imageHolder.insertBefore(element, imageHolderChild);

@@ -1,13 +1,15 @@
 <?php 
-    class Pages extends Controller {
+    class Gallery extends Controller {
         public function __construct()
         {
+            $this->galleryModel = $this->model('Gall');
         }
         public function index()
         {
-            $this->view('pages/index', ['title' => 'SharePosts',
-            'description' => 'Simple social network built on'
-            ]);
+            $users = $this->galleryModel->loadImages();
+            $comments = $this->galleryModel->loadComments();
+            $data = array($users,$comments);
+            $this->view('pages/gallery', $data);
         }
         public function about()
         {
