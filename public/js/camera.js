@@ -13,59 +13,63 @@ inputFile.addEventListener('change', function(event) {
     const fileReader = new FileReader();
 
     if (file){
-        if (file.type.startsWith('image/')){
-            if (file.size <= 4000000){
-                fileReader.onloadend = function (e){
-                    const img = new Image();
-                    img.onload = function (){
-                        const canvas = document.getElementById('canvas');
-                        const context = canvas.getContext('2d');
-                        const selectFileSection = document.querySelector('#inputg').remove();
-                        const videoSection = document.querySelector('#video');
-                        const orSection = document.querySelector('#strike');
-                        const displaySection = document.querySelector('#imageshow');
-                        capture.setAttribute('style', 'display: none');
-                        uploadPicture.setAttribute('style', 'display: block');
-                        const imageSrc = URL.createObjectURL(file);
+        if (file.size < 10)
+            alert('Worning! select a valid picture');
+        else {
+            if (file.type.startsWith('image/')){
+                if (file.size <= 4000000){
+                    fileReader.onloadend = function (e){
+                        const img = new Image();
+                        img.onload = function (){
+                            const canvas = document.getElementById('canvas');
+                            const context = canvas.getContext('2d');
+                            const selectFileSection = document.querySelector('#inputg').remove();
+                            const videoSection = document.querySelector('#video');
+                            const orSection = document.querySelector('#strike');
+                            const displaySection = document.querySelector('#imageshow');
+                            capture.setAttribute('style', 'display: none');
+                            uploadPicture.setAttribute('style', 'display: block');
+                            const imageSrc = URL.createObjectURL(file);
 
-                        if (videoSection)
-                            videoSection.remove();
-                        if (orSection)
-                            orSection.remove();
-                        
-                        filters.removeAttribute('disabled');
-                        displaySection.setAttribute('src', imageSrc);
-                        displaySection.classList.add('w-100');
-                        context.drawImage(img, 0, 0, 500, 400);
-                                    
-                        uploadPicture.addEventListener('click', function(){
-                        if (filters.value != 'big_smile' && filters.value != 'christmas_hat' && filters.value != 'golden_crown' && filters.value != 'thumbs_up'){
-                            alert('Worning! you should select a filter');
-                        } else {
-                            event.preventDefault();
-                            var formData = new FormData();
-                            url = 'http://localhost:8001/camagru/camera/uploadedImages';
-                                        
-                            formData.append('file', file);
-                            formData.append('imageSrc', canvas.toDataURL('image/png'));
-                            formData.append('filter', filters.value);
+                            if (videoSection)
+                                videoSection.remove();
+                            if (orSection)
+                                orSection.remove();
                             
-                            fetch(url, {
-                                method: 'POST',
-                                body: formData,
-                                }).then((response) => response.json())
-                                .then((info) => showImage(info))
-                            }
-                        });
+                            filters.removeAttribute('disabled');
+                            displaySection.setAttribute('src', imageSrc);
+                            displaySection.classList.add('w-100');
+                            context.drawImage(img, 0, 0, 500, 400);
+                                        
+                            uploadPicture.addEventListener('click', function(){
+                            if (filters.value != 'big_smile' && filters.value != 'christmas_hat' && filters.value != 'golden_crown' && filters.value != 'thumbs_up'){
+                                alert('Worning! you should select a filter');
+                            } else {
+                                event.preventDefault();
+                                var formData = new FormData();
+                                url = 'http://localhost:8001/camagru/camera/uploadedImages';
+                                            
+                                formData.append('file', file);
+                                formData.append('imageSrc', canvas.toDataURL('image/png'));
+                                formData.append('filter', filters.value);
+                                
+                                fetch(url, {
+                                    method: 'POST',
+                                    body: formData,
+                                    }).then((response) => response.json())
+                                    .then((info) => showImage(info))
+                                }
+                            });
+                        };
+                        img.onerror = function () {
+                            alert('Worning! select a valid picture');
+                        };
+                        img.src = e.target.result;
                     };
-                    img.onerror = function () {
-                        alert('Worning! select a valid picture');
-                    };
-                    img.src = e.target.result;
-                };
-                fileReader.readAsDataURL(file);
-            } else {
-                alert('Too big 4MB picture is the max!')
+                    fileReader.readAsDataURL(file);
+                } else {
+                    alert('Too big 4MB picture is the max!')
+                }
             }
         }
     }
