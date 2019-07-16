@@ -1,4 +1,4 @@
- #profile-img {
+ #nav-profile-img {
     height: 40px;
     border-radius: 50%;
     width: 40px;
@@ -27,4 +27,28 @@
     width: 20%;
     left: 35px;
     top: 20px;
+}
+
+.card-profile-image {
+    border: none;
+}
+
+#card-profile-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+#upload-profile-picture {
+    height: 100%;
+    width: 100%;
+    top: -160px;
+}
+
+.gall-profile {
+    height: 40px;
+    border-radius: 50%;
+    width: 40px;
+
 }

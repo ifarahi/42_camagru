@@ -25,8 +25,8 @@
         <a class="nav-link" href="<?php echo URLROOT;?>/users/logout">Logout</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link profile-img" href="<?php echo URLROOT;?>/pages/profile">
-        <img id="profile-img" src="https://scontent-mrs2-1.xx.fbcdn.net/v/t1.0-9/37789499_2069146163350864_2622003841159135232_n.jpg?_nc_cat=111&_nc_oc=AQlFJgYqN7_SCuNq6xsVxwjl--Irox18X61TyjmwubpO7BnFumHI7uNgj35aR4gG2cg&_nc_ht=scontent-mrs2-1.xx&oh=29145f72f71dccefe0828975ab812a6a&oe=5DB1BFB1">
+        <a class="nav-link profile-img" href="<?php echo URLROOT;?>/profile">
+        <img id="nav-profile-img" src="<?php echo URLROOT .'/'.$_SESSION['profile_img']; ?>">
         </a>
     </li>
     <?php else : ?>

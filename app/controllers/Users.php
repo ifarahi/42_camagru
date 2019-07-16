@@ -206,7 +206,8 @@
       $_SESSION['email'] = $user->email;
       $_SESSION['username'] = $user->username;
       $_SESSION['email_notif'] = $user->email_notification;
-      redirects('');
+      $_SESSION['profile_img'] = $this->userModel->getUserProfileImage($user->id);
+      redirects('pages/gallery');
     }
 
     public function logout(){
