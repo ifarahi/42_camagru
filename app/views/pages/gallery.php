@@ -49,7 +49,7 @@
                                     <?php
                                         if ($data[1]){
                                         foreach($data[1] as $comment){
-                                            if ($img->image_id == $comment->image_id)
+                                            if ($img->image_id == $comment->image_id){
                                                 $url = URLROOT .'/'.$this->getProfileImage($comment->user_id);
                                                 echo '
                                                 <li class="list-group-item d-flex align-items-center">
@@ -59,6 +59,7 @@
                                                 </li>
                                                 
                                                 ';
+                                            };
                                         };
                                         };
                                     ?>
@@ -69,7 +70,8 @@
             </div>
         </div>
         <?php endforeach; ?>
-        <nav aria-label="Page navigation example">
+    </div>
+    <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <?php 
                     $i = 1;
@@ -83,7 +85,6 @@
             </ul>
         </nav>
         <?php }; ?>
-    </div>
 </div>
 <script src="<?php echo URLROOT; ?>/public/js/gallery.js"></script>
 <?php require APPROOT . '/views/inc/footer.php'; ?>
