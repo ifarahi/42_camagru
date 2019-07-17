@@ -30,6 +30,12 @@
             <input type="password" name="confirm_password" class="form-control form-control-lg <?php echo (!empty($data['confirm_password_error'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['password']; ?>">
             <span class="invalid-feedback"><?php echo $data['confirm_password_error']; ?></span>
             </div>
+            <div>
+            <label for="Captcha">Enter the code in the image: <sup>*</sup></label>
+            <img src="http://localhost:8001/camagru/users/register" />
+            <input type="text" name="captcha" class="mb-2 form-control form-control-lg <?php echo (!empty($data['captcha_error'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['password']; ?>">
+            <span class="invalid-feedback"><?php echo $data['captcha_error']; ?></span>
+            </div>
             <div class="row">
                 <div class="col">
                 <input type="submit" value="Register" class="btn btn-success btn-block">

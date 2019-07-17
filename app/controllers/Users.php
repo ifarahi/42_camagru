@@ -17,7 +17,7 @@
         // Process form
   
         // Sanitize POST data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         // Init data
         $data =[
@@ -142,7 +142,7 @@
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Process form
         // Sanitize POST data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         
         // Init data
         $data =[
@@ -251,7 +251,7 @@
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         // Sanitize POST data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         // edit only personal information
         if (isset($_POST['update_personal_information'])){
@@ -450,7 +450,7 @@
         redirects('pages/index');
       if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Sanitize POST data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         // init data
         $data =[
           'email' => trim($_POST['email']),
@@ -501,7 +501,7 @@
       if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         // sanitize data
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        // $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         // Init data
         $data =[
           'password' => trim($_POST['password']),
@@ -548,5 +548,26 @@
           // load the view 
           $this->view('users/newpassword', $data);
         }
+    }
+
+    public function captcha(){
+        $captcha_num = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+        $captcha_num = substr(str_shuffle($captcha_num), 0, 6);
+        $_SESSION["code"] = $captcha_num;
+        $font_size = 30;
+        $img_width = 70;
+        $img_height = 40;
+        $font_size = 30;
+        $img_width = 70;
+        $img_height = 40;
+        $path = 'img/captcha.png';
+
+        $image = imagecreatetruecolor($img_width, $img_height);	
+        $text_color = imagecolorallocate($image, 0, 0, 0);
+        imagecolorallocate($image, 255, 255, 255);
+
+        imagestring($image, 2, 5, 5, $captcha_num, $text_color);
+        imagejpeg($image, $path, 100);
+        echo $_SESSION['code'];
     }
   }

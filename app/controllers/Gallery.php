@@ -44,7 +44,12 @@
                             'username' => ''
                         ];
                         $value = trim($data['comment']);
-                        if (strlen($value) > 0) {
+                        if (strlen($data['comment']) > 400)
+                            $data['error'] = 'you have passed the max lenght of the comment';
+                        if (!strlen($value)) 
+                            $data['error'] = 'this is not a valid comment';
+
+                        if (empty($data['error'])){
                             if ($this->galleryModel->setComment($data)){
                                 $title = '[Camagru] You have a new comment';
                                 $message = 'Hello, we want to informe you that ' . $this->getUsername($data['user_id']) . ' has been commented on your picture ';
@@ -57,7 +62,7 @@
                                 ];
                                 if ($_SESSION['email_notif'] > 0)
                                     $this->sendEmailnotification($info);
-                                $data['comment'] = htmlspecialchars_decode($data['comment']);
+                                $data['comment'] = htmlspecialchars_decode($data['comment'], ENT_QUOTES);
                                 $data['status'] = 'OK';
                                 $data['username'] = $_SESSION['username'];
                                 echo json_encode($data);
@@ -69,7 +74,6 @@
                             }
                         } else {
                             $data['status'] = 'KO';
-                            $data['error'] = 'this is not a valid comment';
                             echo json_encode($data);
                         }
 

@@ -1,3 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/* main {
+    margin-bottom: 5rem !important;
+} */
+ 
  #nav-profile-img {
     height: 40px;
     border-radius: 50%;
@@ -51,4 +60,10 @@
     border-radius: 50%;
     width: 40px;
 
+}
+
+.page-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }

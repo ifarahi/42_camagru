@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+<main>
 <div class="container mt-4">
     <div class="row">
         <?php
@@ -54,7 +55,7 @@
                                                 echo '
                                                 <li class="list-group-item d-flex align-items-center">
                                                 <img class="gall-profile" src="'. $url .'">&nbsp;&nbsp;
-                                                <span class="badge badge-info badge-pill mr-3">'.$this->getUsername($comment->user_id).'</span>
+                                                <span class="badge badge-info badge-pill mr-3" style="max-width: 225px;">'.$this->getUsername($comment->user_id).'</span>
                                                 '. $comment->comment .' 
                                                 </li>
                                                 
@@ -71,7 +72,7 @@
         </div>
         <?php endforeach; ?>
     </div>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" style="margin-bottom: 85px;">
             <ul class="pagination justify-content-center">
                 <?php 
                     $i = 1;
@@ -86,5 +87,6 @@
         </nav>
         <?php }; ?>
 </div>
+</main>
 <script src="<?php echo URLROOT; ?>/public/js/gallery.js"></script>
 <?php require APPROOT . '/views/inc/footer.php'; ?>

@@ -4,18 +4,19 @@ const like = document.querySelectorAll('#likes');
 comment.forEach(comment => comment.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const formData = new FormData();
+            const formData = new FormData();
 
-    formData.append('comment', e.target.comment.value);
-    formData.append('image_id', e.target.image_id.value);
-    const url = 'http://localhost:8001/camagru/gallery/comment';
+            formData.append('comment', e.target.comment.value);
+            formData.append('image_id', e.target.image_id.value);
+            const url = 'http://localhost:8001/camagru/gallery/comment';
 
-    e.target.comment.value = '';
-    fetch(url, {
-        method: 'POST',
-        body: formData,
-        }).then((response) => response.json())
-        .then((info) => showComment(info))
+            e.target.comment.value = '';
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                }).then((response) => response.json())
+                .then((info) => showComment(info))
+
     }
 ));
 
@@ -31,6 +32,7 @@ function showComment(info){
         list.className = 'list-group-item d-flex align-items-center';
         const span = document.createElement('span');
         span.className = 'badge badge-info badge-pill mr-3';
+        span.setAttribute('style', 'max-width: 225px;');
         img.className = 'class="gall-profile';
         img.setAttribute('src',`http://localhost:8001/camagru/${info['profile_img']}`);
         img.setAttribute('style', 'height: 40px; border-radius: 50%; width: 40px;')
